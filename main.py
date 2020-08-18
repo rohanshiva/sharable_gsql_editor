@@ -35,8 +35,8 @@ def message(data):
     "code": data['message'],
     "graph": "MyGraph"
     }
-    response = requests.post("https://f82f2c67cbfc46aa8e43a89d705a0b0e.i.tgcloud.io:14240/gsqlserver/gsql/codecheck", 
-                        json=code, auth=('tigergraph', 'Browser123'))
+    response = requests.post("CODCHECK_ENDPOINT", 
+                        json=code, auth=('USERNAME', 'PASSWORD'))
     emit('broadcast message', data['message'], room=room)
     emit('broadcast errors', response.json(), room=room)
 
