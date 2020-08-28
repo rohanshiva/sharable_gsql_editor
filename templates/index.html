@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <title>GSQL Editor</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="tools">
+        <button>GSQL Editor</button>
+        <button onclick="toggleErrors()">⚠️ Errors</button>
+        <button onclick="toggleWarnings()">❌ Warnings</button>
+
+        <div class="toggle-container">
+          <input type="checkbox" id="switch" name="theme" /><label for="switch"
+            >Toggle</label
+          >
+        </div>
+      </div>
+    </header>
+    <header>
+      <input type="text" id="box" class="inputBox" />
+      <input type="text" id="username" class="inputBox" />
+      <input type="password" id="password" class="inputBox" />
+      <button id="start">Start</button>
+    </header>
+    <textarea
+      spellcheck="false"
+      id="text"
+      placeholder="Type your calulations here..."
+    ></textarea>
+    <textarea disabled spellcheck="false" id="codecheck"></textarea>
+    <script>
+      let link = document.getElementById("box").value;
+      let username = document.getElementById("username").value;
+      let password = document.getElementById("password").value;
+      let errors = "No errors!";
+      let warnings = "No warnings!";
+
+      var checkbox = document.querySelector("input[name=theme]");
+
+      checkbox.addEventListener("change", function () {
+        if (this.checked) {
+          trans();
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          trans();
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      });
+
+      let trans = () => {
+        document.documentElement.classList.add("transition");
+        window.setTimeout(() => {
+          document.documentElement.classList.remove("transition");
+        }, 1000);
+      };
+
+      function toggleWarnings() {
+        const errorArea = document.getElementById("codecheck");
+        errorArea.value = warnings;
+      }
+
+      function toggleErrors() {
+        const errorArea = document.getElementById("codecheck");
+        errorArea.value = errors;
+      }
+
+      $("#start").click(function () {
+        if (
+          !document.getElementById("box").value.includes("//") ||
+          !document.getElementById("box").value.includes(".")
+        ) {
+          alert(
+            "Please try again with a valid box credentials, or check if your box is up"
+          );
+        } else {
+          window.history.pushState(
+            null,
+            null,
+            "#" +
+              document.getElementById("box").value.split("//")[1].split(".")[0]
+          );
+          link = document.getElementById("box").value;
+          username = document.getElementById("username").value;
+          password = document.getElementById("password").value;
+          console.log(link, username, password);
+          setupWebSocket();
+        }
+      });
+
+      function setupWebSocket() {
+        const errorArea = document.getElementById("codecheck");
+        errorArea.value = errors;
+        var socket = io.connect();
+
+        socket.on("connect", () => {
+          socket.emit("join", {
+            room: window.location.hash.substr(1),
+            link: link,
+            username: username,
+            password: password,
+          });
+        });
+
+        socket.on("error", (message) => {
+          alert(message);
+        });
+        // $("#stop").click(function () {
+        // Disconect socket
+        socket.on("disconnect", () => {
+          console.log(socket.connected); // false
+          socket.emit("leave", {
+            room: window.location.hash.substr(1),
+          });
+        });
+        // });
+
+        const textArea = document.querySelector("textarea");
+
+        // Init a timeout variable to be used below
+        let timeout = null;
+
+        // Listen for keystroke events
+        textArea.addEventListener("keyup", function (e) {
+          // Clear the timeout if it has already been set.
+          // This will prevent the previous task from executing
+          // if it has been less than <MILLISECONDS>
+          clearTimeout(timeout);
+
+          // Make a new timeout set to go off in 1000ms (1 second)
+          timeout = setTimeout(function () {
+            socket.emit("send message", {
+              room: window.location.hash.substr(1),
+              message: textArea.value,
+            });
+          }, 1000);
+        });
+
+        socket.on("broadcast errors", (message) => {
+          errors = "";
+          for (let i = 0; i < message["errors"]["length"]; i++) {
+            var pos = message["errors"][i]["charpositioninline"];
+            var errorMsg = message["errors"][i]["msg"];
+            var line = message["errors"][i]["line"];
+            errors +=
+              "Line- " + line + " Pos- " + pos + " Msg- " + errorMsg + "\n";
+            console.log(message["errors"][i]);
+          }
+          if (message["warnings"]["length"] > 0) {
+            warnings = "";
+            for (let i = 0; i < message["warnings"]["length"]; i++) {
+              var pos = message["warnings"][i]["charpositioninline"];
+              var errorMsg = message["warnings"][i]["msg"];
+              var line = message["warnings"][i]["line"];
+              errors +=
+                "Line- " + line + " Pos- " + pos + " Msg- " + errorMsg + "\n";
+              console.log(message["warnings"][i]);
+            }
+          }
+          errorArea.value = errors;
+          console.log(warnings);
+        });
+
+        socket.on("broadcast message", (message) => {
+          const offset = message.length - textArea.value.length;
+          const selection = {
+            start: textArea.selectionStart,
+            end: textArea.selectionEnd,
+          };
+          const startsSame = message.startsWith(
+            textArea.value.substring(0, selection.end)
+          );
+          const endsSame = message.endsWith(
+            textArea.value.substring(selection.start)
+          );
+
+          textArea.value = message;
+          if (startsSame && !endsSame) {
+            textArea.setSelectionRange(selection.start, selection.end);
+          } else if (!startsSame && endsSame) {
+            textArea.setSelectionRange(
+              selection.start + offset,
+              selection.end + offset
+            );
+          } else {
+            textArea.setSelectionRange(selection.start, selection.end + offset);
+          }
+
+          console.log("message", message);
+        });
+      }
+    </script>
+  </body>
+</html>
