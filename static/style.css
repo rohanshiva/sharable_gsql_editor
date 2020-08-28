@@ -1,0 +1,131 @@
+html {
+    --bg: #dae5ed;
+    --font-color: #090821;
+    --afont-color: #fc2f70;
+  
+  }
+  html[data-theme="dark"] {
+    --bg: #282a36;
+    --afont-color: #3cefff;
+    --font-color: #f8f8f2;
+  }
+  
+  body {
+    background-color: var(--bg);
+    
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+  
+  
+  header,
+  footer {
+    z-index: 1;
+    display: flex;
+    padding: 8px 16px;
+    font-weight: 700;
+    align-items: center;
+  }
+  
+  
+  .tools {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    flex-grow: 1;
+  }
+  
+  .tools span {
+    padding: 0 8px;
+  }
+  textarea {
+    width: 100%;
+    padding: 8px 16px;
+    border-style: solid;
+    border-width: 0px;
+    min-height: 10vh;
+    outline: 0;
+    font-size: 18px;
+    font-weight: 700;
+    background-color: var(--bg);
+    resize: none;
+    color: var(--font-color);
+    font-family: "Roboto Mono", monospace;
+  }
+  
+  button {
+    background-color: var(--bg);
+    color: var(--afont-color);
+    font-family: "Roboto Mono", monospace;
+    font-size: 18px;
+    font-weight: 900;
+    border-bottom: 2px solid var(--afont-color);
+    width: 32px;
+    height: 32px;
+    border: 0;
+    outline: 0;
+  }
+  input[type="checkbox"] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+  }
+  
+  label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 52px;
+    height: 27px;
+    background: grey;
+    float: right;
+    border-radius: 100px;
+    position: relative;
+  }
+  
+  label:after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
+  }
+  input {
+    color:var(--font-color); background-color: var(--bg); border-top: 0; border-right: 0; border-left: 0; outline: none; border-bottom: 2px solid var(--afont-color);  text-decoration: none;   font-family: 'Roboto Mono', monospace; width: auto; height: auto;
+  }
+  
+  
+  input:checked + label {
+    background: var(--afont-color);
+  }
+  
+  input:checked + label:after {
+    left: calc(100% - 5px);
+    transform: translateX(-100%);
+  }
+  
+  label:active:after {
+    width: 45px;
+  }
+  ul {
+    list-style-type: square;
+    font-weight: 700;
+    font-size: 18px;
+    font-family: "Roboto Mono", monospace;
+  }
+  html.transition,
+  html.transition *,
+  html.transition *:before,
+  html.transition *:after {
+    transition: all 750ms !important;
+    transition-delay: 0 !important;
+  }
+  
