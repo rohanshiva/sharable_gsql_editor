@@ -7,8 +7,7 @@ from requests.exceptions import ConnectionError
 from deta import Deta
 import os
 import json
-import eventlet
-eventlet.monkey_patch()
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
