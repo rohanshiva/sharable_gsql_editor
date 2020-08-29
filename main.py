@@ -13,10 +13,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
 socketio = SocketIO(app)
 
-endpoints = {"room": ["https://f82f2c67cbfc46aa8e43a89d705a0b0e.i.tgcloud.io:14240/gsqlserver/gsql/codecheck", "tigergraph", "Browser123"]}
-link = "https://71fa3d9ce51140189fbb9436b84f6fd6.i.tgcloud.io:14240/gsqlserver/gsql/codecheck"
+endpoints = {"room": ["https://hey.i.tgcloud.io:14240/gsqlserver/gsql/codecheck", "tigergraph", "Password"]}
+link = "hey"
 username = "tigergraph"
-password = "Browser123"
+password = "Password"
 
 @app.route('/')
 def sessions():
