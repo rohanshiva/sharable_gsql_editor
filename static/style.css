@@ -100,6 +100,7 @@ html {
   }
   input {
     color:var(--font-color); background-color: var(--bg); border-top: 0; border-right: 0; border-left: 0; outline: none; border-bottom: 2px solid var(--afont-color);  text-decoration: none;   font-family: 'Roboto Mono', monospace; width: auto; height: auto;
+      margin-right: 1rem;
   }
   
   
