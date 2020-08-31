@@ -31,31 +31,18 @@
       <input placeholder = "Box url" type="text" id="box" class="inputBox" />
       <input placeholder = "Username" type="text" id="username" class="inputBox" />
       <input placeholder = "Password" type="password" id="password" class="inputBox" />
-      <input placeholder = "Graph Name" type="text" id="graphname" class="inputBox" />
       <button id="start">Start</button>
     </header>
-
-
-
-    <div class="tools">
-      <textarea
+    <textarea
       spellcheck="false"
       id="text"
       placeholder="Type your calulations here..."
     ></textarea>
     <textarea disabled spellcheck="false" id="codecheck"></textarea>
-    </div>
-    <footer>
-      <div class="tools">
-        <button id="lineno"></button>
-
-      </div>
-    </footer>
     <script>
       let link = document.getElementById("box").value;
       let username = document.getElementById("username").value;
       let password = document.getElementById("password").value;
-      let graphname = document.getElementById("graphname").value
       let errors = "No errors!";
       let warnings = "No warnings!";
 
@@ -103,10 +90,10 @@
             "#" +
               document.getElementById("box").value.split("//")[1].split(".")[0]
           );
-          link = document.getElementById("box").value + "/gsqlserver/gsql/codecheck";
+          link = document.getElementById("box").value;
           username = document.getElementById("username").value;
           password = document.getElementById("password").value;
-          graphname = document.getElementById("graphname").value
+          console.log(link, username, password);
           setupWebSocket();
         }
       });
@@ -122,26 +109,26 @@
             link: link,
             username: username,
             password: password,
-            graphname: graphname
           });
         });
 
         socket.on("error", (message) => {
           alert(message);
         });
-
+        // $("#stop").click(function () {
+        // Disconect socket
         socket.on("disconnect", () => {
+          console.log(socket.connected); // false
           socket.emit("leave", {
             room: window.location.hash.substr(1),
           });
         });
-
+        // });
 
         const textArea = document.querySelector("textarea");
 
         // Init a timeout variable to be used below
         let timeout = null;
-
 
         // Listen for keystroke events
         textArea.addEventListener("keyup", function (e) {
@@ -149,10 +136,6 @@
           // This will prevent the previous task from executing
           // if it has been less than <MILLISECONDS>
           clearTimeout(timeout);
-
-        let lineno = document.getElementById("lineno");
-        let textLines = textArea.value.substr(0, textArea.selectionStart).split("\n");
-        lineno.innerHTML = `Line ${textLines.length} Col ${textLines[textLines.length - 1].length}`;
 
           // Make a new timeout set to go off in 1000ms (1 second)
           timeout = setTimeout(function () {
@@ -185,6 +168,7 @@
             }
           }
           errorArea.value = errors;
+          console.log(warnings);
         });
 
         socket.on("broadcast message", (message) => {
@@ -212,6 +196,7 @@
             textArea.setSelectionRange(selection.start, selection.end + offset);
           }
 
+          console.log("message", message);
         });
       }
     </script>
