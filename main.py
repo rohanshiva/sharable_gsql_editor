@@ -35,7 +35,7 @@ def join(data):
 
     if room not in endpoints:
         endpoints[room] = [box_link, box_username, box_password, box_graphname]
-
+    print(endpoints[room])
 
 @socketio.on('leave')
 def on_leave(data):
