@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, jsonify
 from flask_socketio import SocketIO, join_room, send, leave_room, emit
 import requests
 from requests.exceptions import ConnectionError
-
+# b0qhpry9_6FoEBH1tGXEWrWkYZJgo3uSLuQv3uhwR - Project Key
+# b0qhpry9 - Project ID
 from deta import Deta
 import os
 import json
@@ -16,7 +17,6 @@ endpoints = {"room": ["https://hey.i.tgcloud.io:14240/gsqlserver/gsql/codecheck"
 link = "hey"
 username = "tigergraph"
 password = "Password"
-graphname = "graphname"
 
 @app.route('/')
 def sessions():
@@ -30,12 +30,20 @@ def join(data):
     box_link = data["link"]
     box_username = data["username"]
     box_password = data["password"]
-    box_graphname = data["graphname"]
     join_room(room)
 
     if room not in endpoints:
-        endpoints[room] = [box_link, box_username, box_password, box_graphname]
-    print(endpoints[room])
+        endpoints[room] = [box_link, box_username, box_password]
+    # else:
+    #     if room not in endpoints:
+    #         endpoints[room] = [data['link'], data['username'], data['password']]
+    #         link = endpoints[room][0]
+    #         username = endpoints[room][1]
+    #         password = endpoints[room][2]
+    #     else:
+    #         link = endpoints[room][0]
+    #         username = endpoints[room][1]
+    #         password = endpoints[room][2]
 
 @socketio.on('leave')
 def on_leave(data):
@@ -51,7 +59,7 @@ def message(data):
     room = data['room']
     code = {
             "code": data['message'],
-            "graph": endpoints[room][3]
+            "graph": "MyGraph"
             }
     box_link = endpoints[room][0]
     box_username = endpoints[room][1]
@@ -61,6 +69,8 @@ def message(data):
         
     emit('broadcast message', data['message'], room=room)
     emit('broadcast errors', response.json(), room=room)
+    # except ConnectionError as e:
+    #     emit('error', "Please try again with a valid box credentials, or check if your box is up", room=room)
 
 
 
