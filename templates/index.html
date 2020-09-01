@@ -114,7 +114,7 @@
       function setupWebSocket() {
         const errorArea = document.getElementById("codecheck");
         errorArea.value = errors;
-        var socket = io.connect({transports: ['websocket']});
+        var socket = io.connect();
 
         socket.on("connect", () => {
           socket.emit("join", {
