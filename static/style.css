@@ -2,12 +2,18 @@ html {
     --bg: #dae5ed;
     --font-color: #090821;
     --afont-color: #fc2f70;
+    --dbg-color: rgba(0, 0, 0, 0.1);
+    --dbgh-color: rgba(0, 0, 0, 0.2);
+    --dbga-color: rgba(0, 0, 0, 0.3);
   
   }
   html[data-theme="dark"] {
     --bg: #282a36;
     --afont-color: #3cefff;
     --font-color: #f8f8f2;
+    --dbg-color: rgba(255, 255, 255, 0.1);
+    --dbgh-color: rgba(255, 255, 255, 0.2);
+    --dbga-color: rgba(255, 255, 255, 0.3);
   }
   
   body {
@@ -44,11 +50,11 @@ html {
     padding: 0 8px;
   }
   textarea {
-    width: 100%;
+    width: 50vw;
     padding: 8px 16px;
     border-style: solid;
     border-width: 0px;
-    min-height: 10vh;
+    height: 82vh;
     outline: 0;
     font-size: 18px;
     font-weight: 700;
@@ -56,6 +62,30 @@ html {
     resize: none;
     color: var(--font-color);
     font-family: "Roboto Mono", monospace;
+  }
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--dbg-color);
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--dbgh-color);
+  }
+  
+  ::-webkit-scrollbar-thumb:active {
+    background: var(--dbga-color);
+  }
+  
+  ::placeholder {
+    color: var(--font-color);
+  }
+  
+  ::selection {
+    background: #c6d5dd;
   }
   
   button {
@@ -129,3 +159,4 @@ html {
     transition: all 750ms !important;
     transition-delay: 0 !important;
   }
+  
