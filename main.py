@@ -10,7 +10,7 @@ import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 endpoints = {"room": ["https://hey.i.tgcloud.io:14240/gsqlserver/gsql/codecheck", "tigergraph", "Password"]}
 link = "hey"
