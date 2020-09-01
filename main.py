@@ -10,7 +10,7 @@ import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
-socketio = SocketIO(app, {transports: ['websocket']})
+socketio = SocketIO(app)
 
 endpoints = {"room": ["https://hey.i.tgcloud.io:14240/gsqlserver/gsql/codecheck", "tigergraph", "Password"]}
 link = "hey"
@@ -71,4 +71,4 @@ def message(data):
 if __name__ == '__main__':
 #     port = int(os.environ.get('PORT', 5000))
 
-    socketio.run(app, debug=True)
+    app.run(debug=True)
