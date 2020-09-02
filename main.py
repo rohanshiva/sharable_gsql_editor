@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-endpoints = {"room": ["https://hey.i.tgcloud.io:14240/gsqlserver/gsql/codecheck", "tigergraph", "Password"]}
+endpoints = {"room": ["https://hey.i.tgcloud.io:14240/gsqlserver/gsql/codecheck", "tigergraph", "Password"]} # Stores Box credentials for every room
 link = "hey"
 username = "tigergraph"
 password = "Password"
@@ -22,7 +22,7 @@ graphname = "graphname"
 def sessions():
     return render_template('index.html')
 
-
+# Add the user to their specific room, and stores the box credentials in the dictionary
 @socketio.on('join')
 def join(data):
     room = data['room']
@@ -36,17 +36,18 @@ def join(data):
     if room not in endpoints:
         endpoints[room] = [box_link, box_username, box_password, box_graphname]
 
-
+# Removes the user from the room
 @socketio.on('leave')
 def on_leave(data):
     room = data['room']
     leave_room(room)
 
+# Triggers everytime textarea changes, emits the updated textarea to everyone in the room and also emits the Errors/Warnings
 @socketio.on("send message")
 def message(data):
 
 
-    # try:
+
     print(link, username, password)
     room = data['room']
     code = {
@@ -56,19 +57,17 @@ def message(data):
     box_link = endpoints[room][0]
     box_username = endpoints[room][1]
     box_password = endpoints[room][2]
+    # Making a request to the box specific codecheck endpoint
     response = requests.post(box_link, 
                         json=code, auth=(box_username, box_password))
         
     emit('broadcast message', data['message'], room=room)
     emit('broadcast errors', response.json(), room=room)
-    # except ConnectionError as e:
-    #     emit('error', "Please try again with a valid box credentials, or check if your box is up", room=room)
+
 
 
 
 
 
 if __name__ == '__main__':
-#     port = int(os.environ.get('PORT', 5000))
-
     app.run(debug=True)
