@@ -1,21 +1,19 @@
 # Shareable GSQL Editor
-
-A real-time shareable GSQL editor, gives the users the power to collaborate while writing queries
-
+A shareable GSQL editor, gives the users the power to collaborate in real-time when writing GSQL queries
 
 # Tech Stack 
 > Python, JS, HTML, CSS, Flask-SocketIO
 
 # Get Started 
-
+To clone this project, run the following command in your termimal. 
 ```
 git clone https://github.com/rohanshiva/sharable_gsql_editor.git
 ```
-
+Then, navigate to your cloned repository's folder and run the following command to download the required libaries.
 ```
 pip install requirements.txt
 ```
-
+Finally, execute the following command to interact with this project. 
 ```
 python main.py
 ```
