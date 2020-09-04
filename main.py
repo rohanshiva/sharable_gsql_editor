@@ -35,7 +35,8 @@ def join(data):
 
     if room not in endpoints:
         endpoints[room] = [box_link, box_username, box_password, box_graphname]
-
+    emit('joinedroom', "joinedroom", room=room, broadcast=True, include_self=False)
+    
 # Removes the user from the room
 @socketio.on('leave')
 def on_leave(data):
