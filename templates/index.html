@@ -125,6 +125,8 @@
             graphname: graphname
           });
         });
+        
+        const textArea = document.querySelector("textarea");
 
         socket.on("error", (message) => {
           alert(message);
@@ -135,10 +137,17 @@
             room: window.location.hash.substr(1),
           });
         });
+        
+        socket.on("joinedroom", (message) => {
+            socket.emit("send message", {
+              room: window.location.hash.substr(1),
+              message: textArea.value,
+            });
+        });
 
 
-        const textArea = document.querySelector("textarea");
 
+  
         // Init a timeout variable to be used below
         let timeout = null;
 
