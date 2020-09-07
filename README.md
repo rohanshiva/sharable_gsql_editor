@@ -1,10 +1,10 @@
-# Shareable GSQL Editor
+## Shareable GSQL Editor
 A shareable GSQL editor, gives the users the power to collaborate in real-time when writing GSQL queries
 Submission for 2020 Graphathon [@TigerGraph](https://github.com/tigergraph)
-# Tech Stack 
+## Tech Stack 
 > Python, JS, HTML, CSS, Flask-SocketIO
 
-# Get Started 
+## Getting Started 
 To clone this project, run the following command in your termimal. 
 ```
 git clone https://github.com/rohanshiva/sharable_gsql_editor.git
