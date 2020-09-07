@@ -25,5 +25,5 @@ Thanks to [Akash Kaul](https://github.com/akash-kaul) and [Charles Shi](https://
 ![image](https://user-images.githubusercontent.com/20916697/92420304-39e51b00-f138-11ea-8380-a0cba0680b3d.png)
 
 
-
-Demonstration - https://youtu.be/Hk4di_T9SzM
+## Video
+[![Alt text for your video](https://user-images.githubusercontent.com/20916697/92420304-39e51b00-f138-11ea-8380-a0cba0680b3d.png)](https://youtu.be/Hk4di_T9SzM "Graphathon Real Time GSQL Editor")
