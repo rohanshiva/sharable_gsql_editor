@@ -234,30 +234,11 @@
         });
 
         socket.on("broadcast message", (message) => {
-          const offset = message.length - textArea.value.length;
-          const selection = {
-            start: textArea.selectionStart,
-            end: textArea.selectionEnd,
-          };
-          const startsSame = message.startsWith(
-            textArea.value.substring(0, selection.end)
-          );
-          const endsSame = message.endsWith(
-            textArea.value.substring(selection.start)
-          );
+
 
           textArea.value = message;
 
-          if (startsSame && !endsSame) {
-            textArea.setSelectionRange(selection.start, selection.end);
-          } else if (!startsSame && endsSame) {
-            textArea.setSelectionRange(
-              selection.start + offset,
-              selection.end + offset
-            );
-          } else {
-            textArea.setSelectionRange(selection.start, selection.end + offset);
-          }
+
         });
       }
     </script>
