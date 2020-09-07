@@ -14,11 +14,12 @@
     />
   </head>
   <body>
-    <header>
+ <header>
       <div class="tools">
         <button>GSQL Editor</button>
         <button onclick="toggleErrors()">⚠️ Errors</button>
         <button onclick="toggleWarnings()">❌ Warnings</button>
+        <button class="trigger">Login</button>
 
         <div class="toggle-container">
           <input type="checkbox" id="switch" name="theme" /><label for="switch"
@@ -27,13 +28,7 @@
         </div>
       </div>
     </header>
-    <header>
-      <input  title="Example - https://f82f2c67cbfc46aa8e43a89d705a0b0e.i.tgcloud.io:14240" placeholder = "Box url" type="text" id="box" class="inputBox" />
-      <input placeholder = "Username" type="text" id="username" class="inputBox" />
-      <input placeholder = "Password" type="password" id="password" class="inputBox" />
-      <input placeholder = "Graph Name" type="text" id="graphname" class="inputBox" />
-      <button id="start">Start</button>
-    </header>
+
 
 
 
@@ -51,11 +46,58 @@
 
       </div>
     </footer>
+     <div class="modal">
+      <div class="modal-content">
+        <span class="close-button">✖</span>
+        <a>Login</a>
+        <h3>
+          <input
+            title="Example - https://f82f2c67cbfc46aa8e43a89d705a0b0e.i.tgcloud.io:14240"
+            placeholder="Box url"
+            type="text"
+            id="box"
+            class="inputBox"
+          />
+           <input
+            placeholder="Graph Name"
+            type="text"
+            id="graphname"
+            class="inputBox"
+          />
+          <input
+            placeholder="Username"
+            type="text"
+            id="username"
+            class="inputBox"
+          />
+          <input
+            placeholder="Password"
+            type="password"
+            id="password"
+            class="inputBox"
+          />
+        </h3>
+        <button id="start">Start</button>
+      </div>
+    </div>
     <script>
+   
+      const modal = document.querySelector(".modal");
+      const trigger = document.querySelector(".trigger");
+      const closeButton = document.querySelector(".close-button");
+      const toggleModal = () => modal.classList.toggle("show-modal");
+      const windowOnClick = ({ target }) => {
+        if (target === modal) {
+          toggleModal();
+        }
+      };
+      trigger.addEventListener("click", toggleModal);
+      closeButton.addEventListener("click", toggleModal);
+      toggleModal();
       let link = document.getElementById("box").value;
       let username = document.getElementById("username").value;
       let password = document.getElementById("password").value;
-      let graphname = document.getElementById("graphname").value
+      let graphname = document.getElementById("graphname").value;
       let errors = "No errors!";
       let warnings = "No warnings!";
 
@@ -89,6 +131,7 @@
       }
 
       $("#start").click(function () {
+        toggleModal();
         if (
           !document.getElementById("box").value.includes("//") ||
           !document.getElementById("box").value.includes(".")
@@ -103,10 +146,11 @@
             "#" +
               document.getElementById("box").value.split("//")[1].split(".")[0]
           );
-          link = document.getElementById("box").value + "/gsqlserver/gsql/codecheck";
+          link =
+            document.getElementById("box").value + "/gsqlserver/gsql/codecheck";
           username = document.getElementById("username").value;
           password = document.getElementById("password").value;
-          graphname = document.getElementById("graphname").value
+          graphname = document.getElementById("graphname").value;
           setupWebSocket();
         }
       });
@@ -114,7 +158,7 @@
       function setupWebSocket() {
         const errorArea = document.getElementById("codecheck");
         errorArea.value = errors;
-        var socket = io.connect({transports: ['websocket']});
+        var socket = io.connect({ transports: ["websocket"] });
 
         socket.on("connect", () => {
           socket.emit("join", {
@@ -122,14 +166,21 @@
             link: link,
             username: username,
             password: password,
-            graphname: graphname
+            graphname: graphname,
           });
         });
-        
+
         const textArea = document.querySelector("textarea");
 
         socket.on("error", (message) => {
           alert(message);
+        });
+
+        socket.on("joinedroom", (message) => {
+          socket.emit("send message", {
+            room: window.location.hash.substr(1),
+            message: textArea.value,
+          });
         });
 
         socket.on("disconnect", () => {
@@ -137,40 +188,26 @@
             room: window.location.hash.substr(1),
           });
         });
-        
-        socket.on("joinedroom", (message) => {
-            socket.emit("send message", {
-              room: window.location.hash.substr(1),
-              message: textArea.value,
-            });
-        });
 
 
-
-  
-        // Init a timeout variable to be used below
         let timeout = null;
 
-
-        // Listen for keystroke events
-        textArea.addEventListener("keyup", function (e) {
-          // Clear the timeout if it has already been set.
-          // This will prevent the previous task from executing
-          // if it has been less than <MILLISECONDS>
+        textArea.oninput = function (e) {
           clearTimeout(timeout);
-
-        let lineno = document.getElementById("lineno");
-        let textLines = textArea.value.substr(0, textArea.selectionStart).split("\n");
-        lineno.innerHTML = `Line ${textLines.length} Col ${textLines[textLines.length - 1].length}`;
-
-          // Make a new timeout set to go off in 1000ms (1 second)
+          let lineno = document.getElementById("lineno");
+          let textLines = textArea.value
+            .substr(0, textArea.selectionStart)
+            .split("\n");
+          lineno.innerHTML = `Line ${textLines.length} Col ${
+            textLines[textLines.length - 1].length
+          }`;
           timeout = setTimeout(function () {
             socket.emit("send message", {
               room: window.location.hash.substr(1),
               message: textArea.value,
             });
-          }, 1000);
-        });
+          }, 200);
+        };
 
         socket.on("broadcast errors", (message) => {
           errors = "";
@@ -210,6 +247,7 @@
           );
 
           textArea.value = message;
+
           if (startsSame && !endsSame) {
             textArea.setSelectionRange(selection.start, selection.end);
           } else if (!startsSame && endsSame) {
@@ -220,7 +258,6 @@
           } else {
             textArea.setSelectionRange(selection.start, selection.end + offset);
           }
-
         });
       }
     </script>
