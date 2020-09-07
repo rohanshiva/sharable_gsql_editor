@@ -2,8 +2,6 @@ from flask import Flask, render_template, request, jsonify
 from flask_socketio import SocketIO, join_room, send, leave_room, emit
 import requests
 from requests.exceptions import ConnectionError
-
-from deta import Deta
 import os
 import json
 
@@ -62,7 +60,7 @@ def message(data):
     response = requests.post(box_link, 
                         json=code, auth=(box_username, box_password))
         
-    emit('broadcast message', data['message'], room=room)
+    emit('broadcast message', data['message'],  room=room, broadcast=True, include_self=False)
     emit('broadcast errors', response.json(), room=room)
 
 
