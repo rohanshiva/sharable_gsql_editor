@@ -63,6 +63,34 @@ html {
     color: var(--font-color);
     font-family: "Roboto Mono", monospace;
   }
+  a {
+    display: inline-flex;
+    border-bottom: 2px solid var(--afont-color);
+    font-family: "Roboto Mono", monospace;
+    color: var(--font-color);
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .close-button {
+    position: fixed;
+    top: 13px;
+    right: 13px;
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: var(--afont-color);
+    cursor: pointer;
+    transition: all 0.2s;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .trigger {
+    cursor: pointer;
+  }
   ::-webkit-scrollbar {
     width: 4px;
     height: 4px;
@@ -105,6 +133,40 @@ html {
     width: 0;
     visibility: hidden;
   }
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    visibility: hidden;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    transition: all 0.2s;
+    transform: scale(1.05);
+  }
+  
+  .show-modal {
+    visibility: visible;
+    opacity: 1;
+    transition: all 0.2s;
+    transform: scale(1);
+  }
+  
+  .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    overflow: auto;
+    padding: 16px 32px;
+    max-width: 80%;
+    max-height: 80%;
+    border-radius: 8px;
+    background-color: var(--bg);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    transform: translate(-50%, -50%);
+  }
   
   label {
     cursor: pointer;
@@ -129,7 +191,7 @@ html {
     transition: 0.3s;
   }
   input {
-    color:var(--font-color); background-color: var(--bg); border-top: 0; border-right: 0; border-left: 0; outline: none; border-bottom: 2px solid var(--afont-color);  text-decoration: none;   font-family: 'Roboto Mono', monospace; width: auto; height: auto;
+    color:var(--font-color); background-color: var(--bg); border-top: 0; border-right: 0; border-left: 0; outline: none; border-bottom: 2px solid var(--afont-color);  text-decoration: none;   font-family: 'Roboto Mono', monospace; width: 20vw; height: 4vh;
       margin-right: 1rem;
   }
   
