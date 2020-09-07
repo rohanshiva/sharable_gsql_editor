@@ -5,7 +5,6 @@ from requests.exceptions import ConnectionError
 import os
 import json
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -44,9 +43,6 @@ def on_leave(data):
 # Triggers everytime textarea changes, emits the updated textarea to everyone in the room and also emits the Errors/Warnings
 @socketio.on("send message")
 def message(data):
-
-
-
     print(link, username, password)
     room = data['room']
     code = {
@@ -62,11 +58,6 @@ def message(data):
         
     emit('broadcast message', data['message'],  room=room, broadcast=True, include_self=False)
     emit('broadcast errors', response.json(), room=room)
-
-
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
