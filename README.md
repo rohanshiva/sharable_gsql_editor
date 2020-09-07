@@ -1,6 +1,6 @@
 # Shareable GSQL Editor
 A shareable GSQL editor, gives the users the power to collaborate in real-time when writing GSQL queries
-
+Submission for 2020 Graphathon [@TigerGraph](https://github.com/tigergraph)
 # Tech Stack 
 > Python, JS, HTML, CSS, Flask-SocketIO
 
