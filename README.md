@@ -21,4 +21,6 @@ python main.py
 Thanks to [Akash Kaul](https://github.com/akash-kaul) and [Charles Shi](https://github.com/CharlesShi12) for helping me build this project.
 
 ![image](https://user-images.githubusercontent.com/20916697/92420271-0904e600-f138-11ea-86d5-5300324feac4.png)
-![image](https://user-images.githubusercontent.com/20916697/92031404-2d268880-ed2e-11ea-9885-efef005e1e5d.png)
+
+![image](https://user-images.githubusercontent.com/20916697/92420291-233ec400-f138-11ea-9438-38ee58941e0f.png)
+
