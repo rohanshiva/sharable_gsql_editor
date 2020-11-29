@@ -6,7 +6,7 @@ import os
 import json
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
+app.config['SECRET_KEY'] = ''
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 endpoints = {"room": ["https://hey.i.tgcloud.io:14240/gsqlserver/gsql/codecheck", "tigergraph", "Password"]} # Stores Box credentials for every room
